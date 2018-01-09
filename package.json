@@ -1,0 +1,20 @@
+{
+  "name": "electron-dir-files",
+  "version": "0.1.0",
+  "description": "",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "electron ./demo/main.js",
+    "i": "npm install && npm install electron --no-package-lock"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^1.7.10",
+    "mime-types": "^2.1.17"
+  },
+  "peerDependencies": {
+    "electron": "~1.7.10"
+  }
+}
