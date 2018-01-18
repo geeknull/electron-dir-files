@@ -1,6 +1,6 @@
 let remote = require('electron').remote;
-let fs = remote.require('fs');
-let path = remote.require('path');
+let fs = window.require('fs');
+let path = window.require('path');
 let dialog = remote.dialog;
 let mime = require('mime-types');
 
@@ -17,6 +17,7 @@ let FakeBrowserFile = class {
     this.fd = null;
     this.status = 'init';
     this.open();
+    this.close();
     if (this.status !== 'success') {
       return void 0;
     } // TODO throw
@@ -40,15 +41,31 @@ let FakeBrowserFile = class {
     }
   }
 
+  openFile(_p) {
+    let fd = null;
+    try {
+      fd = fs.openSync(path.resolve(_p), 'r');
+    } catch (e) {}
+    return fd
+  }
+
+  closeFile(df) {
+    try {
+      df && fs.closeSync(fd);
+    } catch (e) {}
+  }
+
   slice(start, end) {
     // let fileBolb = fs.readSync(this.fd, buf, 0, len, start);
     return {
       toBlob: () => new Promise((resolve, reject) => {
         let len = end - start;
         let buf = new Buffer(len);
-        fs.read(this.fd, buf, 0, len, start, (err, bytesRead, buffer) => {
+        let fd = this.openFile(this.path); // TODO error null throw
+        fs.read(fd, buf, 0, len, start, (err, bytesRead, buffer) => {
           let blob = new Blob([buffer]);
           resolve(blob);
+          this.closeFile(fd);
         });
       })
     }
