@@ -1,4 +1,4 @@
-let remote = require('electron').remote;
+let remote = window.require('electron').remote;
 let fs = window.require('fs');
 let path = window.require('path');
 let dialog = remote.dialog;
