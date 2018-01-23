@@ -23,7 +23,6 @@ let FakeBrowserFile = class {
     this.size = this.stats.size;
     this.type = mime.lookup(this.name);
     this.webkitRelativePath = rootDirRel + this._path.replace(rootDirAbs, '');
-    // debugger
   }
 
   open() {

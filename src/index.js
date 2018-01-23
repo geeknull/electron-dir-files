@@ -66,12 +66,14 @@ let getBrowserFiles = async () => {
     return void 0;
   }
 
-  let dirPath = paths[0];
-  let filesPath = await getFiles(dirPath);
+  let rootDirAbs = paths[0];
+  let filesPath = await getFiles(rootDirAbs);
 
-  let preDirPath = dirPath.replace(dirPath.split(path.sep).pop(), '');
+  let rootDirPre = rootDirAbs.replace(rootDirAbs.split(path.sep).pop(), '');
+  let rootDirRel = rootDirAbs.replace(rootDirPre, '');
+
   let files = filesPath.map((_path) => {
-    return new FakeBrowserFile(_path, preDirPath);
+    return new FakeBrowserFile(_path, rootDirAbs, rootDirRel);
   });
 
   return files;
@@ -92,7 +94,6 @@ let pathIsDirSync = filePathAbs => {
 
 let readDirSync = function* (parentPathAbs, rootDirAbs, rootDirRel) {
   let childPathsAbs = fs.readdirSync(parentPathAbs);
-  debugger
   if (childPathsAbs) {
     for (let i = 0, len = childPathsAbs.length; i < len; i++) {
       let filePathAbs = path.join(parentPathAbs, childPathsAbs[i]);
@@ -131,24 +132,35 @@ let getBrowserFilesGen = function* () {
     }
     return {selectDirAbsolutePath, selectDirRelativePath};
   });
+
   if (!selectDirAbsolutePath) {return void 0;} // if not selected dir return
 
   // support custom config selectDirRealtivePath
   if (newSelectDirRelativePath) {
     selectDirRelativePath = newSelectDirRelativePath;
   }
+  // yield {selectDirAbsolutePath, selectDirRelativePath};
 
-  return readDirGen;
+  
   yield* readDirSync(selectDirAbsolutePath, selectDirAbsolutePath, selectDirRelativePath);
 }
 
 
 getBrowserFiles.getBrowserFilesGen = getBrowserFilesGen;
 
-let getBrowserFilesGen2 = async() => {
+let getBrowserFilesGen2 = async(p) => {
   let selectDirAbsolutePath = null;
   let selectDirRelativePath = null;
   let selectDirPreviousPath = null;
+
+  let selectDirs = await getDirPaths();
+  selectDirAbsolutePath = selectDirs ? selectDirs[0] : selectDirs;
+  if (selectDirAbsolutePath) {
+    selectDirPreviousPath = selectDirAbsolutePath.replace(selectDirAbsolutePath.split(path.sep).pop(), '');
+    selectDirRelativePath = selectDirAbsolutePath.replace(selectDirPreviousPath, '');
+  }
+  return p({selectDirAbsolutePath, selectDirRelativePath});
+  // return {selectDirAbsolutePath, selectDirRelativePath};
 };
 
 getBrowserFiles.getBrowserFilesGen2 = getBrowserFilesGen2;
