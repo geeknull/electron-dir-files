@@ -80,7 +80,7 @@ let getBrowserFiles = async () => {
 };
 module.exports = getBrowserFiles;
 
-
+/*************** new api ***************/ 
 
 let pathIsDirSync = filePathAbs => {
   // TODO try
@@ -106,11 +106,6 @@ let readDirSync = function* (parentPathAbs, rootDirAbs, rootDirRel) {
     }
   }
 };
-
-// absolutePath
-// relativePath
-// AbsolutePath
-// RelativePath
 
 let readDirGen = function* (){
   yield* readDirSync(selectDirAbsolutePath, selectDirAbsolutePath, selectDirRelativePath);
@@ -163,4 +158,4 @@ let getBrowserFilesGen2 = async(p) => {
   // return {selectDirAbsolutePath, selectDirRelativePath};
 };
 
-getBrowserFiles.getBrowserFilesGen2 = getBrowserFilesGen2;
+getBrowserFiles.getBrowserFilesGen = getBrowserFilesGen;
