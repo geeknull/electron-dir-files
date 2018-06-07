@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('mime-types')) :
-	typeof define === 'function' && define.amd ? define(['mime-types'], factory) :
-	(global.electronDirFiles = factory(global.mimeTypes));
-}(this, (function (mimeTypes) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('mime-types')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'mime-types'], factory) :
+	(factory((global.electronDirFiles = {}),global.mimeTypes));
+}(this, (function (exports,mimeTypes) { 'use strict';
 
 mimeTypes = mimeTypes && mimeTypes.hasOwnProperty('default') ? mimeTypes['default'] : mimeTypes;
 
@@ -396,6 +396,7 @@ var src = createCommonjsModule(function (module) {
     };
   }();
   module.exports = getBrowserFiles;
+  module.exports.FakeBrowserFile = fakeBrowserFile;
 
   /*************** new api ***************/
 
@@ -572,7 +573,12 @@ var src = createCommonjsModule(function (module) {
   getBrowserFiles.getBrowserFilesGen = getBrowserFilesGen;
 });
 
-return src;
+var src_1 = src.FakeBrowserFile;
+
+exports.default = src;
+exports.FakeBrowserFile = src_1;
+
+Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 //# sourceMappingURL=bundle.umd.js.map
