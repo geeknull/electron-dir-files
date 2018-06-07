@@ -79,6 +79,7 @@ let getBrowserFiles = async () => {
   return files;
 };
 module.exports = getBrowserFiles;
+module.exports.FakeBrowserFile = FakeBrowserFile;
 
 /*************** new api ***************/ 
 
