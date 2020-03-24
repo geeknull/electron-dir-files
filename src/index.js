@@ -62,11 +62,11 @@ let getFiles = (_path) => {
 
 let getBrowserFiles = async () => {
   let paths = await getDirPaths();
-  if (!paths) {
+  if (!paths || !Array.isArray(paths.filePaths) || !paths.filePaths.length) {
     return void 0;
   }
 
-  let rootDirAbs = paths[0];
+  let rootDirAbs = paths.filePaths[0];
   let filesPath = await getFiles(rootDirAbs);
 
   let rootDirPre = rootDirAbs.replace(rootDirAbs.split(path.sep).pop(), '');
