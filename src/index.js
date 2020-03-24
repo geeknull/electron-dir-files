@@ -6,7 +6,7 @@ let FakeBrowserFile = require('./fakeBrowserFile.js');
 let FakeBrowserDir = require('./fakeBrowserDir.js');
 
 // get selected dir
-let getDirPaths = () =>  {
+let getDirPaths = () => {
   return dialog.showOpenDialog(remote.getCurrentWindow(), {
     properties: ['openDirectory'] // file is openFile
   });
@@ -62,7 +62,10 @@ let getFiles = (_path) => {
 
 let getBrowserFiles = async () => {
   let paths = await getDirPaths();
-  if (!paths || !Array.isArray(paths.filePaths) || !paths.filePaths.length) {
+
+  if (Array.isArray(paths) && !paths) {
+    return void 0;
+  } else if (Object.prototype.toString.call(paths) === '[object Object]' && (!Array.isArray(paths.filePaths) || !paths.filePaths.length)) {
     return void 0;
   }
 
