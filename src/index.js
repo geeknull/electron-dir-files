@@ -6,11 +6,11 @@ let FakeBrowserFile = require('./fakeBrowserFile.js');
 let FakeBrowserDir = require('./fakeBrowserDir.js');
 
 // get selected dir
-let getDirPaths = () => new Promise((resolve, reject) => {
-  dialog.showOpenDialog(remote.getCurrentWindow(), {
+let getDirPaths = () =>  {
+  return dialog.showOpenDialog(remote.getCurrentWindow(), {
     properties: ['openDirectory'] // file is openFile
-  }, resolve);
-});
+  });
+};
 
 let childFileOrDir = (filePath, files) => {
   return new Promise((resolve, reject) => {

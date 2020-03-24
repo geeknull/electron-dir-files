@@ -127,7 +127,7 @@ var FakeBrowserFile = function () {
         toBlob: function toBlob() {
           return new Promise(function (resolve, reject) {
             var len = end - start;
-            var buf = new Buffer(len);
+            var buf = Buffer.alloc(len);
             var fd = _this.openFile(_this._path); // TODO error null throw
             fs.read(fd, buf, 0, len, start, function (err, bytesRead, buffer) {
               var blob = new Blob([buffer]);
@@ -183,10 +183,8 @@ var src = createCommonjsModule(function (module) {
 
   // get selected dir
   var getDirPaths = function getDirPaths() {
-    return new Promise(function (resolve, reject) {
-      dialog.showOpenDialog(remote.getCurrentWindow(), {
-        properties: ['openDirectory'] // file is openFile
-      }, resolve);
+    return dialog.showOpenDialog(remote.getCurrentWindow(), {
+      properties: ['openDirectory'] // file is openFile
     });
   };
 
