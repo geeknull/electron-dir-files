@@ -53,7 +53,7 @@ let FakeBrowserFile = class {
     return {
       toBlob: () => new Promise((resolve, reject) => {
         let len = end - start;
-        let buf = new Buffer(len);
+        let buf = Buffer.alloc(len);
         let fd = this.openFile(this._path); // TODO error null throw
         fs.read(fd, buf, 0, len, start, (err, bytesRead, buffer) => {
           let blob = new Blob([buffer]);
