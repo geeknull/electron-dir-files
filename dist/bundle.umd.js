@@ -359,20 +359,47 @@ var src = createCommonjsModule(function (module) {
 
             case 2:
               paths = _context5.sent;
+              rootDirAbs = '';
+              // 兼容不同的electron版本，返回值类型有 undefined、非空array、object
 
               if (paths) {
-                _context5.next = 5;
+                _context5.next = 8;
                 break;
               }
 
               return _context5.abrupt('return', void 0);
 
-            case 5:
+            case 8:
+              if (!Array.isArray(paths)) {
+                _context5.next = 12;
+                break;
+              }
+
               rootDirAbs = paths[0];
-              _context5.next = 8;
+              _context5.next = 16;
+              break;
+
+            case 12:
+              if (!(Object.prototype.toString.call(paths) === '[object Object]')) {
+                _context5.next = 16;
+                break;
+              }
+
+              if (!(!Array.isArray(paths.filePaths) || !paths.filePaths.length)) {
+                _context5.next = 15;
+                break;
+              }
+
+              return _context5.abrupt('return', void 0);
+
+            case 15:
+              rootDirAbs = paths.filePaths[0];
+
+            case 16:
+              _context5.next = 18;
               return getFiles(rootDirAbs);
 
-            case 8:
+            case 18:
               filesPath = _context5.sent;
               rootDirPre = rootDirAbs.replace(rootDirAbs.split(path.sep).pop(), '');
               rootDirRel = rootDirAbs.replace(rootDirPre, '');
@@ -381,7 +408,7 @@ var src = createCommonjsModule(function (module) {
               });
               return _context5.abrupt('return', files);
 
-            case 13:
+            case 23:
             case 'end':
               return _context5.stop();
           }

@@ -6,7 +6,7 @@ let FakeBrowserFile = require('./fakeBrowserFile.js');
 let FakeBrowserDir = require('./fakeBrowserDir.js');
 
 // get selected dir
-let getDirPaths = () =>  {
+let getDirPaths = () => {
   return dialog.showOpenDialog(remote.getCurrentWindow(), {
     properties: ['openDirectory'] // file is openFile
   });
@@ -62,11 +62,20 @@ let getFiles = (_path) => {
 
 let getBrowserFiles = async () => {
   let paths = await getDirPaths();
+
+  let rootDirAbs = '';
+  // 兼容不同的electron版本，返回值类型有 undefined、非空array、object
   if (!paths) {
     return void 0;
+  } else if (Array.isArray(paths)) {
+    rootDirAbs = paths[0];
+  } else if (Object.prototype.toString.call(paths) === '[object Object]') {
+    if (!Array.isArray(paths.filePaths) || !paths.filePaths.length) {
+      return void 0;
+    }
+    rootDirAbs = paths.filePaths[0];
   }
 
-  let rootDirAbs = paths[0];
   let filesPath = await getFiles(rootDirAbs);
 
   let rootDirPre = rootDirAbs.replace(rootDirAbs.split(path.sep).pop(), '');
