@@ -76,7 +76,6 @@ let getBrowserFiles = async () => {
     rootDirAbs = paths.filePaths[0];
   }
 
-  let rootDirAbs = paths.filePaths[0];
   let filesPath = await getFiles(rootDirAbs);
 
   let rootDirPre = rootDirAbs.replace(rootDirAbs.split(path.sep).pop(), '');
